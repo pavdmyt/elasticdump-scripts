@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ES_HOST="localhost"
-ES_PORT="9200"
+ES_PORT="9242"
+DUMP_DIR="./dumps"
 
 
 function backup () {
@@ -10,13 +11,14 @@ function backup () {
 
     elasticdump \
         --input="$in" \
-        --output="./${idx_name}_mapping.json" \
+        --output="${DUMP_DIR}/${idx_name}_mapping.json" \
         --type=mapping
 
     elasticdump \
+        --type=data \
         --input="$in" \
-        --output="./${idx_name}.json" \
-        --type=data
+        --output=$ \
+        | gzip > "${DUMP_DIR}/${idx_name}.json.gz"
 }
 
 function print_usage () {
