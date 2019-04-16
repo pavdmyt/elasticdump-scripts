@@ -2,6 +2,7 @@
 
 ES_HOST="localhost"
 ES_PORT="9202"
+DUMP_DIR="./dumps"
 
 
 function restore () {
@@ -31,7 +32,13 @@ function main () {
         exit 1
     fi
 
-    restore "$1"
+    # Prepare
+    local -r idx_name="$1"
+    cp $DUMP_DIR/$idx_name* .
+    gzip -d $idx_name.json.gz
+
+    # Restore
+    restore "$idx_name"
 }
 
 main "${@}"
